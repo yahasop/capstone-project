@@ -87,7 +87,7 @@ resource "aws_launch_template" "my-launch-template" {
   image_id               = data.aws_ami.my-ami.id #The result of the data block is used here to fetch the created image
   depends_on             = [aws_ami_from_instance.temporaryvm-ami]
   vpc_security_group_ids = [module.vpc.alb-secgroup]
-  key_name = "tf-key-pair"
+  key_name = "app-key-pair"
   user_data              = filebase64("user_data.sh") #Script provided externally. Needs to be translated to 64 bitcode
 }
 
