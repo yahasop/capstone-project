@@ -110,3 +110,9 @@ resource "aws_autoscaling_group" "my-asg" {
   target_group_arns = [module.alb.alb-tg-arn]
   depends_on        = [module.alb.aws_lb]
 }
+
+data "aws_instances" "asg_instances" {
+  instance_tags = {
+    "aws:autoscaling:groupName" = aws_autoscaling_group.my-asg.name
+  }
+}
