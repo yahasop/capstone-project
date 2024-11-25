@@ -38,7 +38,7 @@ data "aws_ami" "my-ami" {
 }
 
 resource "aws_key_pair" "tf-key-pair" {
-  key_name   = "tf-key-pair"
+  key_name   = "app-key-pair"
   public_key = tls_private_key.rsa.public_key_openssh
 }
 
@@ -49,9 +49,9 @@ resource "tls_private_key" "rsa" {
 
 resource "local_file" "tf-key" {
   content  = tls_private_key.rsa.private_key_pem
-  filename = "tf-key-pair"
+  filename = "app-key-pair"
   provisioner "local-exec" {
-    command = "chmod 400 ./tf-key-pair"
+    command = "chmod 400 ./app-key-pair"
   }
 }
 
