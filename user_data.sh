@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo apt update -y
 sudo apt install openjdk-17-jdk -y
-sudo apt install jq -y
+sudo apt install jq sshpass -y
 sudo ufw allow 80
 sudo ufw allow 443
 echo "ubuntu:ubuntu" | sudo chpasswd
