@@ -1,0 +1,9 @@
+- hosts: nexuserver:appserver
+  become: yes #Become to run the tasks as sudo. Editing the sudoers file needs the permission.
+  tasks:
+    - name: add user to sudoers
+      lineinfile: #Module to write/append line into a file
+        path: /etc/sudoers #Path of sudoers file
+        line: 'ubuntu ALL=(ALL) NOPASSWD: ALL' #Line to be added. Replace MANAGED_NODE_USER for the actual user of the node
+        state: present #This makes sure the file exists
+        validate: "visudo -cf %s" #Validate changes before saving. The sudoers file is critical.

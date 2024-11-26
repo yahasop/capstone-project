@@ -12,3 +12,7 @@ sudo ufw allow 3306
 sudo ufw allow 8080
 sudo ufw allow 8081
 sudo ufw allow 8082
+echo "ubuntu:ubuntu" | sudo chpasswd
+sudo sed -i -e 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/#Include \/etc\/ssh\/sshd_config.d\/\*.conf/g' /etc/ssh/sshd_config
+sudo sed -i -e 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+sudo systemctl restart ssh

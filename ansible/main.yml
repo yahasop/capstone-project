@@ -1,0 +1,6 @@
+- hosts: appserver:nexuserver
+  become: yes
+
+  tasks:
+    - name: echo a hello
+      ansible.builtin.command: echo "hello world"
