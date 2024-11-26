@@ -1,5 +1,4 @@
 - hosts: appserver:nexuserver
-  become: yes
 
   tasks:
     - name: echo a hello
