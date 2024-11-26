@@ -36,6 +36,7 @@ resource "aws_internet_gateway" "my-vpc-ig" {
 resource "aws_subnet" "my-public_subnet" {
   cidr_block              = var.vpc_public_subnet_cidr_block
   vpc_id                  = aws_vpc.my-vpc.id
+  availability_zone = "us-east-1a"
   map_public_ip_on_launch = true
 }
 
