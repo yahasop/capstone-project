@@ -23,7 +23,7 @@ pipeline {
 
         stage('Checkout') {
             when {
-                expression { params.tfstep == 'Apply' }
+                expression { params.tfstep == 'Apply' || params.tfstep == 'Ansible' }
             }
             
             steps {
@@ -80,7 +80,7 @@ pipeline {
 
             steps {
                 sh 'chmod u+x create-inv.sh'
-                sh './create-inv.sh'
+                sh 'sudo ./create-inv.sh'
                 sh 'ansible --version'
                 sh 'sshpass -p ubuntu ansible-playbook -i ./ansible/hosts ./ansible/main.yml -u ubuntu -k'
                 //ansiblePlaybook become: true, credentialsId: 'ubuntuCreds', installation: 'ansible-jenkins-linux', inventory: './ansible/hosts', playbook: './ansible/main.yml', vaultTmpPath: ''
