@@ -11,8 +11,12 @@ SECOND=${LINES[1]}
 
 cat <<EOF > ./ansible/hosts
 [appserver]
-appserver ansible_host=$FIRST ansible_ssh_user=ubuntu #ansible_password=ubuntu
+appserver1 ansible_host=$FIRST ansible_ssh_user=ubuntu #ansible_password=ubuntu
 
 [nexuserver]
-nexuserver ansible_host=$SECOND ansible_ssh_user=ubuntu #ansible_password=ubuntu
+nexuserver1 ansible_host=$SECOND ansible_ssh_user=ubuntu #ansible_password=ubuntu
 EOF
+
+cat <<EOF > /etc/ansible/ansible.cfg
+[defaults]
+host_key_checking=False

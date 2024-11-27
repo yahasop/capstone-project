@@ -1,7 +1,7 @@
 pipeline {
     
     parameters {
-        choice choices: ['Apply', 'Destroy'], description: 'Terraform step to run', name: 'tfstep'
+        choice choices: ['Apply', 'Destroy', 'Ansible'], description: 'Terraform step to run', name: 'tfstep'
     }
     
     agent {
@@ -20,17 +20,7 @@ pipeline {
     }
     
     stages {
-        /*
-        stage('CleanEnv') {
-            when {
-                expression { params.tfstep == 'Apply' }
-            }
-            
-            steps {
-                cleanWs()
-            }
-        }
-        */
+
         stage('Checkout') {
             when {
                 expression { params.tfstep == 'Apply' }
@@ -82,14 +72,18 @@ pipeline {
                 sh 'terraform destroy --auto-approve'
             }
         }
-
+        
         stage('Running Ansible') {
             when {
-                expression { params.tfstep == 'Apply' }
+                expression { params.tfstep == 'Ansible' }
             }
 
             steps {
-                ansiblePlaybook become: true, credentialsId: 'ubuntuCreds', installation: 'ansible-jenkins-linux', inventory: './ansible/hosts', playbook: './ansible/main.yml', vaultTmpPath: ''
+                sh 'chmod u+x create-inv.sh'
+                sh './create-inv.sh'
+                sh 'ansible --version'
+                sh 'sshpass -p ubuntu ansible-playbook -i ./ansible/hosts ./ansible/main.yml -u ubuntu -k'
+                //ansiblePlaybook become: true, credentialsId: 'ubuntuCreds', installation: 'ansible-jenkins-linux', inventory: './ansible/hosts', playbook: './ansible/main.yml', vaultTmpPath: ''
             }
         }
     }
