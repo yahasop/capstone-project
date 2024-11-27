@@ -20,3 +20,4 @@ EOF
 cat <<EOF > /etc/ansible/ansible.cfg
 [defaults]
 host_key_checking=False
+EOF
