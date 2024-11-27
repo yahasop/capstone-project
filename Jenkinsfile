@@ -73,7 +73,7 @@ pipeline {
             }
         }
         
-        stage('Running Ansible') {
+        stage('Running Ansible (Preparation)') {
             when {
                 expression { params.tfstep == 'Ansible' }
             }
@@ -82,8 +82,17 @@ pipeline {
                 sh 'chmod u+x create-inv.sh'
                 sh 'sudo ./create-inv.sh'
                 sh 'ansible --version'
-                sh 'sshpass -p ubuntu ansible-playbook -i ./ansible/hosts ./ansible/main.yml -u ubuntu -k'
-                //ansiblePlaybook become: true, credentialsId: 'ubuntuCreds', installation: 'ansible-jenkins-linux', inventory: './ansible/hosts', playbook: './ansible/main.yml', vaultTmpPath: ''
+                sh 'sshpass -p ubuntu ansible-playbook -i ./ansible/hosts ./ansible/add-sudoers.yml -u ubuntu -k'
+            }
+        }
+
+        stage('Running Ansible (Installing Docker)') {
+            when {
+                expression { params.tfstep == 'Ansible' }
+            }
+
+            steps {
+                sh 'ansible-playbook -i ./ansible/hosts ./ansible/main.yml'
             }
         }
     }
