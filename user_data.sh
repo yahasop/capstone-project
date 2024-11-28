@@ -1,7 +1,7 @@
 #!/bin/bash
+sudo apt-add-repository ppa:ansible/ansible
 sudo apt update -y
-sudo apt install openjdk-17-jdk -y
-sudo apt install jq sshpass -y
+sudo apt install jq sshpass openjdk-17-jdk ansible -y
 sudo ufw allow 80
 sudo ufw allow 443
 echo "ubuntu:ubuntu" | sudo chpasswd
