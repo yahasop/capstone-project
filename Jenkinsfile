@@ -17,15 +17,7 @@ pipeline {
     }
     
     stages {
-        stage('CleanEnv') {
-            when {
-                expression { params.tfstep == 'Apply' }
-            }
-            steps {
-                cleanWs()
-            }
-        }
-        
+
         stage('Checkout') {
             when {
                 expression { params.tfstep == 'Apply' }

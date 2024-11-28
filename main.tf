@@ -25,7 +25,7 @@ resource "local_file" "tf-key" {
 }
 
 resource "aws_s3_bucket" "my-s3-bucket" {
-  bucket = "terraform-backend-grid-ysolis"
+  bucket = "tf-backend-ysolis-${formatdate("YYYY-MM-DD", timestamp())}"
   tags = {
     Name = "my-s3-bucket"
   }
