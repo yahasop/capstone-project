@@ -10,7 +10,7 @@ pipeline {
     
     tools {
         terraform 'terraform-jenkins-linux'
-        ansible 'ansible-jenkins-linux'
+        //ansible 'ansible-jenkins-linux'
     }
     
     environment {
