@@ -81,7 +81,7 @@ Dashboard > Manage Jenkins > Nodes > New Node
     * Labels: agent2
     * Usage: As much as possible
     * Launch method: Launch agents via SSH
-    * Host: <JenkinsAgent_VM_IP>
+    * Host: `JenkinsAgentVM_PUBLICIP` (Provided after provision-agent pipeline is build)
     * Credentials: ubuntuCreds
     * Host Key Verification Strategy: Non verifying Verification Strategy (not recommended)
     * Availability: Keep this agent online as much as possible
@@ -102,46 +102,13 @@ Dashboard > New Item > Pipeline
     * Script path: Jenkinsfile
 
 ## Executing pipelines
-The intention of this project is to automate almost everything that can be automatized. In this scenario only two manual steps needs to be done. 
-The first pipeline to be build is the provision-agent
-
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
-
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
-
-## Authors
-
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
-## Acknowledgments
-
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+The intention of this project is to automate almost everything that can be automatized. In this scenario only one manual step needs to be performed.
+When the first pipeline is build, the console output will provide us the IP address of the Jenkins Agent. This IP needs to be put on the node configuration for 'agent2' in the host field
+Some other semi-manual steps are the ones within the pipelines. These pipelines are parameterized and depending on which option is selected, it'll run specific steps.
+* The povision-agent pipeline have two parameters:
+    * Apply: Runs all the necessary steps until the resources are provisioned
+    * Destroy: Runs a deprovisioning of the infrastructure based on the Terraform state
+* The provision-infrastructure pipeline have three parameters
+    * Apply: Runs all the necessary steps until the resources are provisioned
+    * Destroy: Runs a deprovisioning of the infrastructure based on the Terraform state
+    * Ansible: Runs the Ansible playbooks once the resources are provisioned
