@@ -121,12 +121,20 @@ resource "aws_security_group" "alb-secgroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-    ingress {
+  ingress {
     description = "Allow external access trough 3306 port"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow all traffic within VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1" # Allows all protocols
+    cidr_blocks = ["10.0.0.0/16"] # VPC CIDR block
   }
 
   egress {
