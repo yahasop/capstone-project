@@ -7,3 +7,8 @@ output "instances-ip" {
   description = "ASG Instances Public IP's"
   value = data.aws_instances.asg_instances[*].public_ips
 }
+
+output "private-instances-ip" {
+  description = "ASG Instances Private IP's"
+  value = data.aws_instances.asg_instances[*].private_ips
+}
