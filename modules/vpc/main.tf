@@ -1,7 +1,7 @@
-data "http" "my-ip" {
+/*data "http" "my-ip" {
   url = "https://ifconfig.me"
 }
-
+*/
 resource "aws_vpc" "my-vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true #This enables DNS hostname to be used within this VPC
@@ -94,7 +94,8 @@ resource "aws_security_group" "alb-secgroup" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${chomp(data.http.my-ip.response_body)}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
+    #cidr_blocks = ["${chomp(data.http.my-ip.response_body)}/32"]
   }
 
   ingress {
