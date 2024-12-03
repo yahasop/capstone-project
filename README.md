@@ -32,8 +32,10 @@ Dashboard > Manage Jenkins > Plugins > Available Plugins
 * Ansible
 * AWS Credentials
 * Maven Integration
+* Github Integration
 * Paramaterized Trigger
 * Pipeline Stage View
+* Warnings
 
 #### Credentials
 Dashboard > Manage Jenkins > Credentials > System > Global Credentials > Add Credentials
