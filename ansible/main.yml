@@ -55,3 +55,8 @@
         name: jenkins
         groups: docker
         append: yes
+
+    - name: Restart docker service
+      service:
+        name: docker
+        state: restarted
