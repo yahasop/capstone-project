@@ -37,6 +37,15 @@ data "aws_ami" "my-ami" {
   }
 }
 
+resource "aws_ecr_repository" "my-ecr" {
+  name                 = "my-ecr"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
 resource "aws_key_pair" "tf-key-pair" {
   key_name   = "app-key-pair"
   public_key = tls_private_key.rsa.public_key_openssh
