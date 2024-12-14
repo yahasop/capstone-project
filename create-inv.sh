@@ -15,6 +15,9 @@ cat <<EOF > ./ansible/hosts
 appserver1 ansible_host=$FIRST ansible_ssh_user=ubuntu
 appserver2 ansible_host=$SECOND ansible_ssh_user=ubuntu
 
+[agent]
+jenkins-agent ansible_connection=local ansible_ssh_user=ubuntu
+
 EOF
 
 cat <<EOF > /etc/ansible/ansible.cfg
