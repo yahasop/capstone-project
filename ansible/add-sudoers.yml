@@ -1,4 +1,4 @@
-- hosts: nexuserver:appserver
+- hosts: all
   become: yes #Become to run the tasks as sudo. Editing the sudoers file needs the permission.
   tasks:
     - name: add user to sudoers
