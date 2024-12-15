@@ -24,15 +24,6 @@ resource "local_file" "tf-key" {
   }
 }
 
-/*
-resource "aws_s3_bucket" "my-s3-bucket" {
-  bucket = "tf-backend-ysolis-${formatdate("YYYY-MM-DD", timestamp())}"
-  tags = {
-    Name = "my-s3-bucket"
-  }
-}
-*/
-
 resource "aws_vpc" "my-vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
