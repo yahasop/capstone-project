@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 data "http" "my-ip" {
-  url = "https://ip.me"
+  url = "https://ipv4.icanhazip.com"
 }
 
 resource "aws_key_pair" "tf-key-pair" {
