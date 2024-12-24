@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 data "http" "my-ip" {
-  url = "https://ifconfig.me"
+  url = "https://ip.me"
 }
 
 resource "aws_key_pair" "tf-key-pair" {
