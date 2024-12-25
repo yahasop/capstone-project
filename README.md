@@ -58,6 +58,12 @@ Dashboard > Manage Jenkins > Credentials > System > Global Credentials > Add Cre
     * Password: ubuntu
     * ID: ubuntuCreds
     * Description: Optional
+* Token fo GH Access
+    * Kind: Secret text
+    * Scope: Global
+    * Secret: GitHub Access Token
+    * ID: Github token to access this repo
+    * Description: Optional
 
 #### Tools
 Dashboard > Manage Jenkins > Tools (Need to install the plugins first)
