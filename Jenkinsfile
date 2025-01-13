@@ -12,19 +12,20 @@ pipeline {
     
     //Selection of tools to be used
     tools {
-        terraform 'terraform-jenkins-linux'
+        terraform 'terraform-jenkins-linux' //Uses the terraform installer for linux (tool needs to be configured)
     }
     
     //Environnment variables for this particular pipeline
     environment {
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID') //Uses the credentials as value of the variable
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY') //Uses the credentials as value of the variable
-        AWS_DEFAULT_REGION = "us-east-1" //Allows to define the default AWS region if in the TF config is not declared
+        //Fetchs the credentials configured in the Jenkins credentials manager
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = "us-east-1" //Allows to set the default AWS region if in the TF config file is not declared
     }
     
     stages {
         
-        //SCM checkout. If params Apply or Ansible are selected, this stage will be build
+        //SCM checkout. If params Apply or Ansible are selected, this stage will be built
         stage('Checkout') {
             when {
                 expression { params.tfstep == 'Apply' || params.tfstep == 'Ansible' }
@@ -58,7 +59,7 @@ pipeline {
             
             steps {
                 sh 'terraform plan -out tf-plan'
-                sh 'terraform apply tf-plan'
+                sh 'terraform apply tf-plan' //No approval is needed when applying the plan from a file
             }
         }
         

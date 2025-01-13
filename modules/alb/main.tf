@@ -13,7 +13,8 @@ resource "aws_lb" "my-alb" {
 #A listener check for connection request into the LB
 resource "aws_lb_listener" "my-lb-listener" {
   load_balancer_arn = aws_lb.my-alb.arn
-  port              = 80
+  #port              = 80
+  port              = 8080
   protocol          = "HTTP"
   default_action {
     type             = "forward" #Directs traffic to the LB
@@ -24,7 +25,8 @@ resource "aws_lb_listener" "my-lb-listener" {
 #Creates the LB target group. Those are the instances where the LB will direct traffic to
 resource "aws_lb_target_group" "my-alb-tg" {
   name     = "my-alb-tg"
-  port     = 80
+  #port     = 80
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc-id
 }
