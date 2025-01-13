@@ -29,4 +29,14 @@ resource "aws_lb_target_group" "my-alb-tg" {
   port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc-id
+
+  health_check {
+    path                = "/"
+    port                = "8080"
+    protocol            = "HTTP"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+  }
 }
