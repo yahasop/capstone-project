@@ -8,7 +8,6 @@ done < instances-ip.txt
 
 FIRST=${LINES[0]}
 SECOND=${LINES[1]}
-#THIRD=$(curl -4 ifconfig.me)
 
 cat <<EOF > ./ansible/hosts
 [appserver]
