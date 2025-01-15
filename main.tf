@@ -40,18 +40,19 @@ resource "aws_internet_gateway" "my-vpc-ig" {
   vpc_id = aws_vpc.my-vpc.id
 }
 
-
+#Provision a subnet within the my-vpc VPC
 resource "aws_subnet" "my-public_subnet" {
   cidr_block              = var.vpc_public_subnet_cidr_block
   vpc_id                  = aws_vpc.my-vpc.id
-  availability_zone = "us-east-1a"
-  map_public_ip_on_launch = true
+  availability_zone = "us-east-1a" #Availability zone for the Subnet
+  map_public_ip_on_launch = true #Instances launched into subnet should be assigned a public IP
 }
 
+#Provide a route table resource
 resource "aws_route_table" "my-vpc-rt" {
   vpc_id = aws_vpc.my-vpc.id
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = "0.0.0.0/0" #Route where
     gateway_id = aws_internet_gateway.my-vpc-ig.id
   }
 }
