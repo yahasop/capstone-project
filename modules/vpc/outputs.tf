@@ -13,11 +13,7 @@ output "subnet-1" {
 output "subnet-2" {
   value = aws_subnet.subnet-2.id
 }
-/*
-output "subnet-3" {
-  value = aws_subnet.subnet-3.id
-}
-*/
+
 output "internet-gateway" {
   value = aws_internet_gateway.my-internet-gate.id
 }
