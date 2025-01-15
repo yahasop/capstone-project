@@ -13,7 +13,6 @@ resource "aws_lb" "my-alb" {
 #A listener check for connection request into the LB
 resource "aws_lb_listener" "my-lb-listener" {
   load_balancer_arn = aws_lb.my-alb.arn
-  #port              = 80
   port              = 80
   protocol          = "HTTP"
   default_action {
@@ -25,7 +24,6 @@ resource "aws_lb_listener" "my-lb-listener" {
 #Creates the LB target group. Those are the instances where the LB will direct traffic to
 resource "aws_lb_target_group" "my-alb-tg" {
   name     = "my-alb-tg"
-  #port     = 80
   port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc-id
@@ -34,9 +32,9 @@ resource "aws_lb_target_group" "my-alb-tg" {
     path                = "/"
     port                = "8080"
     protocol            = "HTTP"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 5
-    unhealthy_threshold = 2
+    interval            = 30 #Every 30 seconds performs a health check
+    timeout             = 5 #A timeout of 5 seconds when performing a health check
+    healthy_threshold   = 5 #After 5 attempts a target is considered healthy
+    unhealthy_threshold = 2 #After 2 attempts a target is considered unhealthy
   }
 }

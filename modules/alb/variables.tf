@@ -9,11 +9,7 @@ variable "subnet1-id" {
 variable "subnet2-id" {
   type = string
 }
-/*
-variable "subnet3-id" {
-  type = string
-}
-*/
+
 variable "secgroup-id" {
   type = string
 }

@@ -24,6 +24,7 @@ module "alb" {
   internet-gateway = module.vpc.internet-gateway
 }
 
+/*
 #Data block to fetch the AMI from available AMI's
 #A dependency argument is declared as the AMI needs to be created first
 data "aws_ami" "my-ami" {
@@ -36,6 +37,7 @@ data "aws_ami" "my-ami" {
     values = ["temporaryvm_ami-${formatdate("YYYY-MM-DD", timestamp())}"]
   }
 }
+*/
 
 resource "aws_ecr_repository" "my-ecr" {
   name                 = "my-ecr"
@@ -63,7 +65,7 @@ resource "local_file" "tf-key" {
     command = "chmod 400 ./app-key-pair"
   }
 }
-
+/*
 #Temporary VM to create an AMI later from it
 resource "aws_instance" "temporary-vm" {
   instance_type               = "t3.medium"
@@ -76,7 +78,9 @@ resource "aws_instance" "temporary-vm" {
     Name = "TemporaryVM"
   }
 }
+*/
 
+/*
 #This block creates the AMI
 #A custom name for the AMI is provided using built-in functions
 #Disadvantage of this is that every apply the instance will be destroyed and created, as the timestamp changes
@@ -87,14 +91,16 @@ resource "aws_ami_from_instance" "temporaryvm-ami" {
   snapshot_without_reboot = true
   depends_on              = [aws_instance.temporary-vm]
 }
+*/
 
 #The AutoScaling group needs a Launch Template. This creates that
 #It uses the recently created AMI (with a dependency on it) and a Shell script that will be provided
 resource "aws_launch_template" "my-launch-template" {
   instance_type          = "t3.medium"
   name                   = "my-launch-template"
-  image_id               = data.aws_ami.my-ami.id #The result of the data block is used here to fetch the created image
-  depends_on             = [aws_ami_from_instance.temporaryvm-ami]
+  image_id               =  "ami-005fc0f236362e99f" #The result of the data block is used here to fetch the created image
+  #image_id               = data.aws_ami.my-ami.id #The result of the data block is used here to fetch the created image
+  #depends_on             = [aws_ami_from_instance.temporaryvm-ami]
   vpc_security_group_ids = [module.vpc.alb-secgroup]
   key_name = "app-key-pair"
   user_data              = filebase64("user_data.sh") #Script provided externally. Needs to be translated to 64 bitcode
