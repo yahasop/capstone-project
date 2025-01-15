@@ -6,16 +6,21 @@ data "http" "my-ip" {
   url = "https://ipv4.icanhazip.com"
 }
 
+#The next three blocks are used to provision a key pair and create the file in the local system
+#This creates the aws key pair resource using the tls block 
 resource "aws_key_pair" "tf-key-pair" {
   key_name   = "tf-key-pair"
   public_key = tls_private_key.rsa.public_key_openssh
 }
 
+#The resource provides a PEM formatted private key using RSA 
 resource "tls_private_key" "rsa" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
+#The resource creates a local file where the terraform configuration files exist and the contents are the private key
+#It uses a local-exec provisioner to change the permissions of the key
 resource "local_file" "tf-key" {
   content  = tls_private_key.rsa.private_key_pem
   filename = "tf-key-pair"
@@ -24,14 +29,17 @@ resource "local_file" "tf-key" {
   }
 }
 
+#Creates the VPC where the resources will be allocated
 resource "aws_vpc" "my-vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
 }
 
+#A gateway to provide access to the VPC into an onto through public internet
 resource "aws_internet_gateway" "my-vpc-ig" {
   vpc_id = aws_vpc.my-vpc.id
 }
+
 
 resource "aws_subnet" "my-public_subnet" {
   cidr_block              = var.vpc_public_subnet_cidr_block
