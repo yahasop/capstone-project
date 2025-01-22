@@ -71,7 +71,8 @@ resource "aws_launch_template" "my-launch-template" {
 #The resource block that will create the ASG
 #The desired capacity will mantain 2 instances at the same time. Max and min are the min and max expected capacity of the scale group
 #Uses the launch template and sets a dependency as the ALB needs to be created first
-#Also it uses the target group ARN to add the created instances to it. It will add automatically the instances managed by the ASG when they are provisioned
+#Also it uses the target group ARN to add the created instances to it. 
+#It will add automatically the instances managed by the ASG when they are provisioned
 resource "aws_autoscaling_group" "my-asg" {
   name                = "my-asg"
   desired_capacity    = 2
@@ -88,6 +89,7 @@ resource "aws_autoscaling_group" "my-asg" {
   depends_on        = [module.alb.aws_lb]
 }
 
+#This data block retrieves information about ASG and its instances
 data "aws_instances" "asg_instances" {
   instance_tags = {
     "aws:autoscaling:groupName" = aws_autoscaling_group.my-asg.name

@@ -97,6 +97,7 @@ pipeline {
             steps {
                 sh 'chmod u+x create-inv.sh' //Makes the script executable
                 sh 'sudo ./create-inv.sh' //Executes the script with sudo permissions
+                //Uses sshpass to be able to SSH into Ansible hosts providing user and password in this line. NOT RECOMMENDED
                 sh 'sshpass -p ubuntu ansible-playbook -i ./ansible/hosts ./ansible/add-sudoers.yml -u ubuntu -k'
             }
         }
@@ -107,6 +108,7 @@ pipeline {
             }
 
             steps {
+                //Executes the Ansible main.yml playbook that will install Docker on instances
                 sh 'ansible-playbook -i ./ansible/hosts ./ansible/main.yml'
             }
         }

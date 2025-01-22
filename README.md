@@ -14,7 +14,6 @@ Some of the tools that are being integrated in this project are:
 * Git
 * Scripting (Bash/Python)
 * Linux
-* Nexus
 
 ## Getting Started
 
@@ -120,3 +119,10 @@ Some other semi-manual steps are the ones within the pipelines. These pipelines 
     * Apply: Runs all the necessary steps until the resources are provisioned
     * Destroy: Runs a deprovisioning of the infrastructure based on the Terraform state
     * Ansible: Runs the Ansible playbooks once the resources are provisioned
+
+
+# Architecture
+
+<img width="1042" alt="Architecture Diagram" src="./ArchitectureDiagram.png">
+
+<img width="1042" alt="Project Diagram" src="./ProjectDiagram.png">
