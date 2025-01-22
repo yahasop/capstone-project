@@ -17,9 +17,9 @@ variable "vpc_public_subnet_cidr_block" {
 }
 
 variable "anywhere_cidr_block" {
-  type = string
+  type        = string
   description = "CIDR block to allow access from anywhere"
-  default = "0.0.0.0/0"
+  default     = "0.0.0.0/0"
 }
 
 variable "instance_type" {

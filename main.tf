@@ -52,8 +52,8 @@ resource "aws_internet_gateway" "my-vpc-ig" {
 resource "aws_subnet" "my-public_subnet" {
   vpc_id                  = aws_vpc.my-vpc.id
   cidr_block              = var.vpc_public_subnet_cidr_block
-  availability_zone = var.aws_region #Availability zone for the Subnet
-  map_public_ip_on_launch = true #Instances launched into subnet should be assigned a public IP
+  availability_zone       = var.aws_region #Availability zone for the Subnet
+  map_public_ip_on_launch = true           #Instances launched into subnet should be assigned a public IP
 
   tags = {
     Name = "Jenkins-Agent-Subnet"
@@ -84,7 +84,7 @@ resource "aws_security_group" "my-jenkins-agent-sg" {
   name   = "my-jenkins-agent-sg"
   vpc_id = aws_vpc.my-vpc.id
 
-#Requests from anywhere are allowed on 80 (HTTP) and 443 (HTTPS) ports
+  #Requests from anywhere are allowed on 80 (HTTP) and 443 (HTTPS) ports
   ingress {
     description = "Allow external access trough 80 port"
     from_port   = 80
@@ -101,7 +101,7 @@ resource "aws_security_group" "my-jenkins-agent-sg" {
     cidr_blocks = [var.anywhere_cidr_block]
   }
 
-#Requests from only local machine are allowed on 22 (SSH) port
+  #Requests from only local machine are allowed on 22 (SSH) port
   ingress {
     description = "Allow external access trough 22 port only from local machine"
     from_port   = 22
@@ -110,7 +110,7 @@ resource "aws_security_group" "my-jenkins-agent-sg" {
     cidr_blocks = ["${chomp(data.http.my-ip.response_body)}/32"] #This sets local machine IP using the data block and formatting
   }
 
-#Traffic to anywhere is allowed
+  #Traffic to anywhere is allowed
   egress {
     from_port   = 0
     to_port     = 0
@@ -126,9 +126,9 @@ resource "aws_instance" "jenkins-agent" {
   subnet_id              = aws_subnet.my-public_subnet.id #Subnet the instance will belong to
   vpc_security_group_ids = [aws_security_group.my-jenkins-agent-sg.id]
   key_name               = "tf-key-pair" #Pem key associated to the instance. Neccesary to log into
-  depends_on             = [local_file.tf-key] 
+  depends_on             = [local_file.tf-key]
   user_data              = filebase64("user_data.sh") #Script that runs after the instance provisions
-  
+
   tags = {
     Name = "Jenkins-Agent"
   }
