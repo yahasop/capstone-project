@@ -1,7 +1,13 @@
 #!/bin/bash
 sudo apt-add-repository ppa:ansible/ansible #Adding the Ansible repository to install it in the agent
 sudo apt update -y
-sudo apt install jq sshpass openjdk-17-jdk ansible awscli -y #Installing all neccesary tools
+# Installs all neccesary tools
+# - jq to use it to process the terraform output's json
+# - sshpass to enable password non-interactive authentication when connecting through ssh
+# - openjdk-17-jdk is neccesary to be able to use the instance as jenkins agent
+# - ansible to use ansible to make configurations and to deploy the application
+# - awscli to process some commands to fetch information about AWS resources
+sudo apt install jq sshpass openjdk-17-jdk ansible awscli -y
 sudo ansible-galaxy collection install community.docker #Installing the Docker Ansible module
 sudo ufw allow 80 #This enables both 80 and 443 ports on instance's firewall to allow requests
 sudo ufw allow 443

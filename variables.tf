@@ -16,6 +16,12 @@ variable "vpc_public_subnet_cidr_block" {
   default     = "10.0.0.0/24"
 }
 
+variable "anywhere_cidr_block" {
+  type = string
+  description = "CIDR block to allow access from anywhere"
+  default = "0.0.0.0/0"
+}
+
 variable "instance_type" {
   type        = string
   description = "Type for EC2 Instnace"
