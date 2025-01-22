@@ -1,7 +1,10 @@
+#This data block stores information about the local machine's IPv4
+#Basically the URL is an API that returns the IPv4 of the machine making the request
 data "http" "my-ip" {
   url = "https://ipv4.icanhazip.com"
 }
 
+#Creates the VPC where the resources will be allocated
 resource "aws_vpc" "my-vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true #This enables DNS hostname to be used within this VPC
@@ -11,20 +14,17 @@ resource "aws_vpc" "my-vpc" {
   }
 }
 
-#A gateway to internet. Every VPC needs one if they want to connect to public internet
+#A gateway to enable traffic into and onto public internet
 resource "aws_internet_gateway" "my-internet-gate" {
   vpc_id = aws_vpc.my-vpc.id
 }
 
-#Three subnets, each for an instance
-#I set their availabilty zone to manually provision they there
-#Also a CIDR block to declare how many IP can be allocated into each one
-#An option to provision a public IP for each one
+#Two subnets for this project. Instances managed for the ASG will be allocated in those subnets
 resource "aws_subnet" "subnet-1" {
   vpc_id                  = aws_vpc.my-vpc.id
-  cidr_block              = "10.0.1.0/24"
-  availability_zone       = "us-east-1a"
-  map_public_ip_on_launch = true
+  cidr_block              = "10.0.1.0/24" #Amount of IP's that can be allocated
+  availability_zone       = "us-east-1a" #Set the availabilty zone
+  map_public_ip_on_launch = true #Instances launched into subnet should be assigned a public IP
   tags = {
     Name = "Public Subnet 1"
   }
@@ -32,17 +32,17 @@ resource "aws_subnet" "subnet-1" {
 
 resource "aws_subnet" "subnet-2" {
   vpc_id                  = aws_vpc.my-vpc.id
-  cidr_block              = "10.0.2.0/24"
-  availability_zone       = "us-east-1b"
-  map_public_ip_on_launch = true
+  cidr_block              = "10.0.2.0/24" #Amount of IP's that can be allocated
+  availability_zone       = "us-east-1b" #Set the availabilty zone
+  map_public_ip_on_launch = true #Instances launched into subnet should be assigned a public IP
   tags = {
     Name = "Public Subnet 2"
   }
 }
 
-#A route table that will direct traffic within the VPC
-#In this case, will direct traffic from anywhere (0.0.0.0/0) to the VPC
-#The internet gateway is attached to allow the traffic
+#A gateway to enable traffic into and onto public internet
+#Will direct traffic from anywhere (0.0.0.0/0) to the VPC
+#The internet gateway is attached to allow the public traffic
 resource "aws_route_table" "my-route-table" {
   vpc_id = aws_vpc.my-vpc.id
 
@@ -65,14 +65,12 @@ resource "aws_route_table_association" "subnet2" {
   route_table_id = aws_route_table.my-route-table.id
 }
 
-#This security group sets 3 ingress rules and 1 egress
-# - Traffic from everywhere is allowed on 80 (HTTP) and 443 (HTTPS) ports
-# - Traffic from only Terraform host is allowed on 22 (SSH) port
-# - Traffic to everywhere is allowed
+#This security group sets 5 ingress rules and 1 egress
 resource "aws_security_group" "alb-secgroup" {
   name   = "alb-secgroup"
   vpc_id = aws_vpc.my-vpc.id
 
+#Traffic from anywhere is allowed on 80 (HTTP), 443 (HTTPS) and 8080 ports
   ingress {
     description = "Allow external access trough 80 port"
     from_port   = 80
@@ -90,14 +88,6 @@ resource "aws_security_group" "alb-secgroup" {
   }
 
   ingress {
-    description = "Allow external access trough 22 port only by MyIP"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["${chomp(data.http.my-ip.response_body)}/32"]
-  }
-
-  ingress {
     description = "Allow external access trough 8080 port"
     from_port   = 8080
     to_port     = 8080
@@ -105,28 +95,13 @@ resource "aws_security_group" "alb-secgroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+#Traffic from only local machine (host) is allowed on 22 (SSH) port
   ingress {
-    description = "Allow external access trough 8081 port"
-    from_port   = 8081
-    to_port     = 8081
+    description = "Allow external access trough 22 port only from local machine"
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow external access trough 8082 port"
-    from_port   = 8082
-    to_port     = 8082
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow external access trough 3306 port"
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${chomp(data.http.my-ip.response_body)}/32"]
   }
 
   ingress {
@@ -134,13 +109,14 @@ resource "aws_security_group" "alb-secgroup" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1" # Allows all protocols
-    cidr_blocks = ["10.0.0.0/16"] # VPC CIDR block
+    cidr_blocks = ["10.0.0.0/16"] #VPC CIDR block
   }
 
+#Traffic to anywhere is allowed
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"
+    protocol    = "-1" #Allows all protocols
     cidr_blocks = ["0.0.0.0/0"]
   }
 }

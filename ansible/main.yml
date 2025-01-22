@@ -1,62 +1,62 @@
 - hosts: all
-  become: yes
+  become: true
   
   tasks:
     - name: Update APT package index
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
-        cache_valid_time: 3600
+        cache_valid_time: 3600 #Only runs an update if 3600 seconds has passed since the last one
 
     - name: Install prerequisites
-      apt:
+      ansible.builtin.apt:
         name: 
           - apt-transport-https
           - ca-certificates
           - curl
           - software-properties-common
-        state: present
+        state: present #Checks if the package is present. If it is, doesnt tries to install it
 
     - name: Add Docker GPG key
-      apt_key:
+      ansible.builtin.apt_key: #Adds Docker GPG key
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
     - name: Add Docker repository
-      apt_repository:
+      ansible.builtin.apt_repository: #Adds the Docker repository to APT package index
         repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
         state: present
 
     - name: Update APT package index again
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
 
     - name: Install Docker
-      apt:
+      ansible.builtin.apt: #Installs the next packages
         name:
           - docker-ce
           - docker-ce-cli
           - containerd.io
-        state: present
+        state: present #Checks if the package is present. If it is, doesnt tries to install it
 
     - name: Ensure Docker service is running
-      systemd:
+      ansible.builtin.systemd_service:
         name: docker
         state: started
-        enabled: true
+        enabled: true #Enables the service, making sure is present after next system reboot
 
     - name: Add user to Docker group
-      user:
-        name: "{{ ansible_user }}"
+      ansible.builtin.user:
+        name: "{{ ansible_user }}" #Ansible variable with the current ansible user
         groups: docker
-        append: yes
+        append: true #Appends the user to the declared group
 
     - name: Add jenkins user to Docker group
-      user:
+      ansible.builtin.user:
         name: jenkins
         groups: docker
-        append: yes
+        append: true #Appends the user to the declared group
 
     - name: Restart docker service
-      service:
+      ansible.builtin.systemd_service:
         name: docker
-        state: restarted
+        state: restarted #To make sure the changes are applied, the service is restarted
