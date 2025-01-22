@@ -33,8 +33,8 @@ resource "aws_lb_target_group" "my-alb-tg" {
     port                = "8080"
     protocol            = "HTTP"
     interval            = 30 #Every 30 seconds performs a health check
-    timeout             = 5 #A timeout of 5 seconds when performing a health check
-    healthy_threshold   = 5 #After 5 attempts a target is considered healthy
-    unhealthy_threshold = 2 #After 2 attempts a target is considered unhealthy
+    timeout             = 5  #A timeout of 5 seconds when performing a health check
+    healthy_threshold   = 5  #After 5 attempts a target is considered healthy
+    unhealthy_threshold = 2  #After 2 attempts a target is considered unhealthy
   }
 }

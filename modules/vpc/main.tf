@@ -23,8 +23,8 @@ resource "aws_internet_gateway" "my-internet-gate" {
 resource "aws_subnet" "subnet-1" {
   vpc_id                  = aws_vpc.my-vpc.id
   cidr_block              = "10.0.1.0/24" #Amount of IP's that can be allocated
-  availability_zone       = "us-east-1a" #Set the availabilty zone
-  map_public_ip_on_launch = true #Instances launched into subnet should be assigned a public IP
+  availability_zone       = "us-east-1a"  #Set the availabilty zone
+  map_public_ip_on_launch = true          #Instances launched into subnet should be assigned a public IP
   tags = {
     Name = "Public Subnet 1"
   }
@@ -33,8 +33,8 @@ resource "aws_subnet" "subnet-1" {
 resource "aws_subnet" "subnet-2" {
   vpc_id                  = aws_vpc.my-vpc.id
   cidr_block              = "10.0.2.0/24" #Amount of IP's that can be allocated
-  availability_zone       = "us-east-1b" #Set the availabilty zone
-  map_public_ip_on_launch = true #Instances launched into subnet should be assigned a public IP
+  availability_zone       = "us-east-1b"  #Set the availabilty zone
+  map_public_ip_on_launch = true          #Instances launched into subnet should be assigned a public IP
   tags = {
     Name = "Public Subnet 2"
   }
@@ -70,7 +70,7 @@ resource "aws_security_group" "alb-secgroup" {
   name   = "alb-secgroup"
   vpc_id = aws_vpc.my-vpc.id
 
-#Traffic from anywhere is allowed on 80 (HTTP), 443 (HTTPS) and 8080 ports
+  #Traffic from anywhere is allowed on 80 (HTTP), 443 (HTTPS) and 8080 ports
   ingress {
     description = "Allow external access trough 80 port"
     from_port   = 80
@@ -95,7 +95,7 @@ resource "aws_security_group" "alb-secgroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-#Traffic from only local machine (host) is allowed on 22 (SSH) port
+  #Traffic from only local machine (host) is allowed on 22 (SSH) port
   ingress {
     description = "Allow external access trough 22 port only from local machine"
     from_port   = 22
@@ -108,11 +108,11 @@ resource "aws_security_group" "alb-secgroup" {
     description = "Allow all traffic within VPC"
     from_port   = 0
     to_port     = 0
-    protocol    = "-1" # Allows all protocols
+    protocol    = "-1"            # Allows all protocols
     cidr_blocks = ["10.0.0.0/16"] #VPC CIDR block
   }
 
-#Traffic to anywhere is allowed
+  #Traffic to anywhere is allowed
   egress {
     from_port   = 0
     to_port     = 0

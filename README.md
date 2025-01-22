@@ -67,9 +67,11 @@ Dashboard > Manage Jenkins > Credentials > System > Global Credentials > Add Cre
 #### Tools
 Dashboard > Manage Jenkins > Tools (Need to install the plugins first)
 * Ansible as 'ansible-jenkins-linux' with tool home: /home/ubuntu/jenkins/tools and installed automatically with shell commands:
-    * sudo apt-add-repository ppa:ansible/ansible
-    * sudo apt update -y
-    * sudo apt install ansible -y
+    ```
+    sudo apt-add-repository ppa:ansible/ansible
+    sudo apt update -y
+    sudo apt install ansible -y
+    ```
 * Terraform installed automatically with bintray.com 
     * 'terraform-jenkins-linux' with version linux amd64 
     * 'terraform-jenkins-mac' with version darwin amd64

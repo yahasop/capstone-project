@@ -62,9 +62,9 @@ resource "local_file" "tf-key" {
 resource "aws_launch_template" "my-launch-template" {
   instance_type          = "t3.medium"
   name                   = "my-launch-template"
-  image_id               =  "ami-005fc0f236362e99f" #Ubuntu22 AMI
+  image_id               = "ami-005fc0f236362e99f" #Ubuntu22 AMI
   vpc_security_group_ids = [module.vpc.alb-secgroup]
-  key_name = "app-key-pair"
+  key_name               = "app-key-pair"
   user_data              = filebase64("user_data.sh") #Script provided externally. Needs to be translated to 64 bitcode
 }
 
