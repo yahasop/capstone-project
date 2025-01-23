@@ -1,7 +1,12 @@
 #Prints the ALB DNS to the console, to access it easily
 output "loadbalancer-dns" {
   description = "Accessing the Load Balancer"
-  value       = "Access load balancer with: http://${module.alb.alb-dns}"
+  value       = "Access the application load balancer with: http://${module.alb.alb-dns}"
+}
+
+output "webloadbalancer-dns" {
+  description = "Accessing the Web Load Balancer"
+  value       = "Access the web load balancer with: http://${module.alb.alb-web-dns}"
 }
 
 #Prints Instances' public IPs

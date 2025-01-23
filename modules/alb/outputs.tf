@@ -9,3 +9,7 @@ output "alb-tg-arn" {
 output "alb-dns" {
   value = aws_lb.my-alb.dns_name
 }
+
+output "alb-web-dns" {
+  value = aws_lb.my-alb-webserver.dns_name
+}
