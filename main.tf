@@ -85,7 +85,7 @@ resource "aws_autoscaling_group" "my-asg" {
     version = "$Latest"
   }
 
-  target_group_arns = [module.alb.alb-tg-arn]
+  target_group_arns = [module.alb.alb-tg-arn, module.alb.alb-tg-webserver-arn]
   depends_on        = [module.alb.aws_lb]
 }
 
