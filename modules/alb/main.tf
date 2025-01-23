@@ -40,7 +40,7 @@ resource "aws_lb_target_group" "my-alb-tg" {
 }
 
 resource "aws_lb" "my-alb-webserver" {
-  name               = "my-application-load-balancer-webserver"
+  name               = "my-alb-webserver"
   internal           = false         #This means the LB is facing public internet
   load_balancer_type = "application" #Sets the LB type. In this case its an Application Load Balancer (ALB)
   security_groups    = [var.secgroup-id]
