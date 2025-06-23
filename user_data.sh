@@ -16,6 +16,7 @@ sudo systemctl start apache2
 sudo ufw allow 80 #This enables both 80, 443 and 8080 ports on instance's firewall to allow requests
 sudo ufw allow 443
 sudo ufw allow 8080
+sudo ufw allow 9000
 echo "ubuntu:ubuntu" | sudo chpasswd #This allow to update the user and password of the instance
 #These next sed commands change some lines to allow password authentication when connecting through SSh to the instance.
 sudo sed -i -e 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/#Include \/etc\/ssh\/sshd_config.d\/\*.conf/g' /etc/ssh/sshd_config
