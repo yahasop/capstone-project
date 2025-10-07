@@ -2,43 +2,14 @@
   become: true
   
   tasks:
-    - name: Update APT package index
-      ansible.builtin.apt:
-        update_cache: yes
-        cache_valid_time: 3600 #Only runs an update if 3600 seconds has passed since the last one
+    - name: Download Docker installation script
+      ansible.builtin.get_url:
+        url: https://get.docker.com
+        dest: ./get-docker.sh
+        mode: '0755'
 
-    - name: Install prerequisites
-      ansible.builtin.apt:
-        name: 
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
-        state: present #Checks if the package is present. If it is, doesnt tries to install it
-
-    - name: Add Docker GPG key
-      ansible.builtin.apt_key: #Adds Docker GPG key
-        url: https://download.docker.com/linux/ubuntu/gpg
-        keyring: /etc/apt/keyrings/docker.asc
-        state: present
-
-    - name: Add Docker repository
-      ansible.builtin.apt_repository: #Adds the Docker repository to APT package index
-        repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-        #repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-        state: present
-
-    - name: Update APT package index again
-      ansible.builtin.apt:
-        update_cache: yes
-
-    - name: Install Docker
-      ansible.builtin.apt: #Installs the next packages
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-        state: present #Checks if the package is present. If it is, doesnt tries to install it
+    - name: Run the Docker installation script
+      ansible.builtin.shell: ./get-docker.sh
 
     - name: Ensure Docker service is running
       ansible.builtin.systemd_service:
