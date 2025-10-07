@@ -12,7 +12,7 @@ pipeline {
     
     //Selection of tools to be used
     tools {
-        terraform 'terraform-jenkins-mac' //Uses the terraform installer for mac as this pipeline runs on a local MacOS environment (tool needs to be configured)
+        terraform 'terraform-jenkins-linux' //Uses the terraform installer for mac as this pipeline runs on a local MacOS environment (tool needs to be configured)
     }
     
     //Environnment variables for this particular pipeline
