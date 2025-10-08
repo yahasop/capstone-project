@@ -7,7 +7,7 @@ sudo apt update -y
 # - sshpass to enable password non-interactive authentication when connecting through ssh
 # - openjdk-17-jdk is neccesary to be able to use the instance as jenkins agent
 # - awscli to process some commands to fetch information about AWS resources
-sudo apt install apache2 jq sshpass openjdk-17-jdk awscli -y
+sudo apt install apache2 jq sshpass openjdk-17-jdk unzip -y
 sudo rm /var/www/html/index.html #After apache is installed, this removes the default page
 #This creates a simple static page and replaces as the Apache default page. Contains info about the host machine
 echo "<html><head><title>Terraform Practice</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">Host is: <br>$HOSTNAME</br> and IP is: <br>$(curl -4 -s ifconfig.me)</br></span></span></p></body></html>" | sudo tee /var/www/html/index.html
@@ -22,6 +22,9 @@ echo "ubuntu:ubuntu" | sudo chpasswd #This allow to update the user and password
 sudo sed -i -e 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/#Include \/etc\/ssh\/sshd_config.d\/\*.conf/g' /etc/ssh/sshd_config
 sudo sed -i -e 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 sudo systemctl restart ssh #This is neccesary to apply the changes on the sshd_config file
+sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo unzip awscliv2.zip
+sudo ./aws/install
 #curl -fsSL https://get.docker.com -o get-docker.sh
 #sh get-docker.sh
 #sudo usermod -aG docker $USER
