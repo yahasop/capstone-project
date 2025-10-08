@@ -16,3 +16,8 @@ echo "ubuntu:ubuntu" | sudo chpasswd #This allow to update the user and password
 sudo sed -i -e 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/#Include \/etc\/ssh\/sshd_config.d\/\*.conf/g' /etc/ssh/sshd_config
 sudo sed -i -e 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 sudo systemctl restart ssh #This is neccesary to apply the changes on the sshd_config file
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+sudo usermod -aG docker $USER
+newgrp docker
+sudo systemctl enable docker
