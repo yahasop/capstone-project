@@ -71,32 +71,6 @@ resource "aws_security_group" "alb-secgroup" {
   vpc_id = aws_vpc.my-vpc.id
 
   #Traffic from anywhere is allowed on 80 (HTTP), 443 (HTTPS) and 8080 ports
-  /*
-  ingress {
-    description = "Allow external access trough 80 port"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow external access trough 443 port"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow external access trough 8080 port"
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  */
-
   dynamic "ingress" {
     for_each = var.ingress_ports
     content {
@@ -107,6 +81,7 @@ resource "aws_security_group" "alb-secgroup" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
+  
   #Traffic from only local machine (host) is allowed on 22 (SSH) port
   ingress {
     description = "Allow external access trough 22 port only from local machine"
